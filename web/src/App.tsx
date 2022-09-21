@@ -2,9 +2,9 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import * as Dialog from '@radix-ui/react-dialog';
 
-import { GameBanner } from './components/GameBanner';
 import { CreateAdBanner } from './components/CreateAdBanner';
 import { CreatedModal } from './components/CreatedModal';
+import { Slider } from './components/Slider';
 
 import './styles/main.css';
 
@@ -36,18 +36,7 @@ export function App() {
         Seu <span className="text-transparent bg-nlw-gradient bg-clip-text">duo</span> está aqui.
       </h1>
 
-      <div className="grid grid-cols-3 md:grid-cols-6 gap-6 mt-16">
-        {games.map(game => {
-          return (
-            <GameBanner
-              key={game.id}
-              bannerUrl={game.bannerUrl}
-              title={game.title}
-              adsCount={game._count.ads}
-            />
-          )
-        })}
-      </div>
+      <Slider games={games} />
 
       <Dialog.Root>
         <CreateAdBanner />

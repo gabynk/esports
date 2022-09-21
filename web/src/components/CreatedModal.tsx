@@ -1,11 +1,11 @@
 import axios from 'axios';
+import { FormEvent, useEffect, useState } from 'react';
 import { Check, GameController } from 'phosphor-react';
 import * as Dialog from '@radix-ui/react-dialog';
 import * as Checkbox from '@radix-ui/react-checkbox';
 import * as ToggleGroup from '@radix-ui/react-toggle-group';
 
 import { Input } from './Form/Input';
-import { FormEvent, useEffect, useState } from 'react';
 
 interface Game {
   id: string;
