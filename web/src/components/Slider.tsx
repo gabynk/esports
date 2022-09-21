@@ -1,6 +1,7 @@
+import { useMemo, useState } from "react";
 import { useKeenSlider, KeenSliderPlugin } from "keen-slider/react";
 import { CaretLeft, CaretRight } from "phosphor-react";
-import { useState } from "react";
+import { useBreakpoint } from "../hooks/useBreakpoints";
 
 import { GameBanner } from "./GameBanner";
 
@@ -31,10 +32,14 @@ const ResizePlugin: KeenSliderPlugin = (slider) => {
 }
 
 export function Slider({ games }: SliderProps) {
+  const breakpoint = useBreakpoint();
+
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [slidesPerView, setSlidesPerView] = useState(6);
+
   const [sliderRef, slider] = useKeenSlider<HTMLDivElement>({
     slides: {
-      perView: 6,
+      perView: breakpoint < 768 ? 3 : 6,
       spacing: 15
     },
     mode: 'free',
@@ -44,6 +49,10 @@ export function Slider({ games }: SliderProps) {
   },
     [ResizePlugin]
   );
+
+  useMemo(() => {
+    setSlidesPerView(breakpoint < 768 ? 3 : 6)
+  }, [breakpoint])
 
   return (
     <>
@@ -73,8 +82,8 @@ export function Slider({ games }: SliderProps) {
               onClick={(e: any) =>
                 e.stopPropagation() || slider.current?.next()
               }
-              disabled={currentSlide >= games.length - 6}
-              className={`"font-bold" ${currentSlide >= games.length - 6 ? "text-zinc-800/30" : "text-white"}`}
+              disabled={currentSlide >= games.length - slidesPerView}
+              className={`"font-bold" ${currentSlide >= games.length - slidesPerView ? "text-zinc-800/30" : "text-white"}`}
             >
               <CaretRight size={35} weight="bold" />
             </button>
