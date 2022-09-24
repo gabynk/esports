@@ -6,6 +6,7 @@ import * as Checkbox from '@radix-ui/react-checkbox';
 import * as ToggleGroup from '@radix-ui/react-toggle-group';
 
 import { Input } from './Form/Input';
+import { Select } from './Form/Select';
 
 interface Game {
   id: string;
@@ -16,6 +17,7 @@ export function CreatedModal() {
   const [games, setGames] = useState<Game[]>([]);
   const [weekDays, setWeekDays] = useState<string[]>([]);
   const [useVoiceChannel, setUseVoiceChannel] = useState(false);
+  const [gameId, setGameId] = useState('');
 
   useEffect(() => {
     axios('http://localhost:3333/games').then(response => {
@@ -34,7 +36,7 @@ export function CreatedModal() {
     }
 
     try {
-      await axios.post(`http://localhost:3333/games/${data.game}/ads`, {
+      await axios.post(`http://localhost:3333/games/${gameId}/ads`, {
         name: data.name,
         discord: data.discord,
         yearsPlaying: Number(data.yearsPlaying),
@@ -60,19 +62,14 @@ export function CreatedModal() {
 
         <form onSubmit={handleCreatedAd} className="mt-8 flex flex-col gap-4">
           <div className="flex flex-col gap-2">
-            <label htmlFor="game" className="font-semibold">Qual o game?</label>
-            <select
+            <Select 
               name="game"
-              id="game"
-              className="bg-zinc-900 py-3 px-4 rounded text-sm placeholder:text-zinc-500 appearance-none"
-              defaultValue=""
-            >
-              <option disabled value="">Selecione o game que deseja jogar</option>
-
-              {games.map(game => {
-                return <option key={game.id} value={game.id}>{game.title}</option>
-              })}
-            </select>
+              label="Qual o game?"
+              placeholder="Selecione o game que deseja jogar"
+              options={games} 
+              selectedValue={gameId}
+              onSelectedValue={setGameId}
+            />
           </div>
 
           <div className="flex flex-col gap-2">
