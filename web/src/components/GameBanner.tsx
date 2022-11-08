@@ -1,16 +1,32 @@
-interface GameBannerProps {
-  bannerUrl: string;
+import { useNavigate } from "react-router-dom";
+
+interface Game {
+  id: string;
   title: string;
-  adsCount: number;
+  bannerUrl: string;
+  _count: {
+    ads: number;
+  }
+}
+interface GameBannerProps {
+  game: Game;
 }
 
-export function GameBanner({ bannerUrl, title, adsCount }: GameBannerProps) {
+export function GameBanner({ game }: GameBannerProps) {
+  const history = useNavigate();
+
+  function handleGoToAdList() {
+    history("/ad-list", { state: { game } });
+  }
+
   return (
-    <a href="" className="keen-slider__slide relative rounded-lg overflow-hidden">
-      <img src={bannerUrl} alt="" />
-      <div className="w-full pt-16 pb-4 px-4 bg-game-gradient absolute bottom-0 left-0 right-0">
-        <strong className="font-bold text-white block">{title}</strong>
-        <span className="text-zinc-300 text-sm block">{adsCount} anúncio(s)</span>
+    <a onClick={handleGoToAdList} className="keen-slider__slide rounded-lg cursor-pointer ">
+      <img src={game.bannerUrl} alt="" className="w-full"/>
+      <div className="w-full pt-16 pb-4 bg-game-gradient absolute bottom-0">
+        <div className="flex flex-col items-start ml-3">
+          <strong className="font-bold text-white">{game.title}</strong>
+          <span className="text-zinc-300 text-sm">{game._count.ads} anúncio(s)</span>
+        </div>
       </div>
     </a>
   );
